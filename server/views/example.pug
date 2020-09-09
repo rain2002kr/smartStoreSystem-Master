@@ -1,0 +1,46 @@
+extends layout
+
+block content
+  h1= title
+  
+  p Welcome to #{title}
+  
+  a(href = PORT class="link") 홈으로 이동
+
+  hr
+  p image Test with gridFsStorage 
+  br   
+  form(action='/example/upload' method='post' enctype='multipart/form-data')
+    p
+      input(type="file" name="userfile")
+    
+      input(type="submit" value="전송")
+
+  form(action='/example/download' method='post' )
+    p
+      input(type="text" value="짜장면.PNG" name="filename")
+    
+      input(type="submit" value="전송")
+
+  hr
+  p image Test with multer storage
+
+  form(action='/example/upload2' method='post' enctype='multipart/form-data')
+    p
+      input(type="file" name="userfile")
+    
+      input(type="submit" value="전송")
+
+
+  form(action='/example/download2' method='post' )
+    p
+      input(type="text" value="짜장면.PNG" name="filename2")
+    
+      input(type="submit" value="전송")  
+    
+    img(src= imgurl )
+    
+    //img(src= "images/nodejs.PNG" style="width:100px; height:50px; display:block; margin-top:10px; ")  
+    //iframe(src='files/mail.pdf', frameborder="1" width="1000px" height="500px")
+    
+

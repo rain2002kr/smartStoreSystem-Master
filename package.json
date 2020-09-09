@@ -1,0 +1,26 @@
+{
+  "name": "smartstoresystem_v0.6.7",
+  "version": "1.0.0",
+  "description": "업데이트 일자 : 2020.06.25",
+  "main": "index.js",
+  "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "compression": "^1.7.4",
+    "concurrently": "^5.2.0",
+    "lowdb": "^1.0.0",
+    "react-full-screen": "^0.3.1",
+    "shortid": "^2.2.15",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "prestart": "start mongod",
+    "client": "cd client && yarn start",
+    "server": "cd server && yarn start",
+    "poststart": "start mongo",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,128 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require("../app");
+var debug = require("debug")("myapp:server");
+var http = require("http");
+const mongoose = require("mongoose");
+//프로미스 중첩에 빠지지 않도록 도와줌
+mongoose.Promise = global.Promise;
+//소켓 io
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || "5000");
+app.set("port", port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+//app.io.attach(server);
+var socketIO = require("socket.io")(server);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port, () => {
+  console.log(`Server backend listening at http://localhost:${port}`);
+  connectDB();
+});
+server.on("error", onError);
+server.on("listening", onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+function connectDB() {
+  let db;
+  const uri = "mongodb://localhost/test";
+  const uriOnline =
+    "mongodb+srv://rain2002kr:password@hoonscluster.8xc1u.gcp.mongodb.net/SMART_STORE_SYSTEM?retryWrites=true&w=majority"; //net 뒤에 db 이름 붙이기
+
+  mongoose.connect(uri, { useNewUrlParser: true });
+  db = mongoose.connection;
+  db.on("error", console.error.bind(console, "connection error:"));
+
+  db.once("open", function () {
+    // we're connected!
+    console.log("Connect to database sucessfully");
+  });
+}
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== "listen") {
+    throw error;
+  }
+
+  var bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case "EACCES":
+      console.error(bind + " requires elevated privileges");
+      process.exit(1);
+      break;
+    case "EADDRINUSE":
+      console.error(bind + " is already in use");
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+  debug("Listening on " + bind);
+}
+
+socketIO.on("connection", function (socket) {
+  console.log("A new browser has connected to this server");
+  //socket.broadcast.emit("welcome", "first connection");
+
+  socket.on("init", function (data) {
+    console.log(data.name);
+    socket.broadcast.emit("welcome", `${data.name}`);
+    //socketIO.emit("welcome", `${data.name}`);
+  });
+});
+/* 
+socketIO.on("connection", (socket) => {
+  let counter = 0;
+  setInterval(() => {
+    socket.emit("hello", ++counter);
+  }, 1000);
+}); */
