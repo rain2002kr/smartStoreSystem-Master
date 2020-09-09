@@ -1,9 +1,9 @@
 const compression = require("compression");
-var createError = require("http-errors");
-var express = require("express");
-var admin = require("sriracha"); //sriracha
-var path = require("path");
-var cookieParser = require("cookie-parser");
+const createError = require("http-errors");
+const express = require("express");
+const admin = require("sriracha"); //sriracha
+const path = require("path");
+const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -13,12 +13,17 @@ const mongoose = require("mongoose");
 
 //프로미스 중첩에 빠지지 않도록 도와줌
 mongoose.Promise = global.Promise;
-var apiRouter = require("./routes/api");
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
-var exampleRouter = require("./routes/example");
+const apiUserRouter = require("./routes/api/user.js");
+const apiFoodRouter = require("./routes/api/food.js");
+const apiOrderRouter = require("./routes/api/order.js");
+const apiCookedRouter = require("./routes/api/cooked.js");
+const apiPaidRouter = require("./routes/api/paid.js");
 
-var app = express();
+const indexRouter = require("./routes/index");
+const usersRouter = require("./routes/users");
+const exampleRouter = require("./routes/example");
+
+const app = express();
 //socket 통신 추가
 //var server = require("http").createServer(app);
 //app.io = require("socket.io")(); //({ path: "/myownpath" });
@@ -28,6 +33,7 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
 app.use(compression());
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -36,7 +42,12 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use("/api", apiRouter);
+app.use("/api/user", apiUserRouter);
+app.use("/api/food", apiFoodRouter);
+app.use("/api/order", apiOrderRouter);
+app.use("/api/cooked", apiCookedRouter);
+app.use("/api/paid", apiPaidRouter);
+
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/example", exampleRouter);
