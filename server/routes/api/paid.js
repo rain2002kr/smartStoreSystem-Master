@@ -27,7 +27,7 @@ const upload2 = multer({ storage: storage2 });
 
 //메뉴 주문 내역 조회
 router.get("/list", function (req, res, next) {
-  console.log("api paidlist");
+  console.log("EXPRESS :API paidlist REQ");
   Order.find({ status: { $gt: 2 } })
     .then((result) => {
       /* console.log(result); */
@@ -42,7 +42,7 @@ router.get("/list", function (req, res, next) {
 /* POST paid finish.  */
 //계산완료 //Paid
 router.post("/finish", function (req, res, next) {
-  console.log("api paid finish ");
+  console.log("EXPRESS :API paid finish REQ");
   const post = req.body;
   //JSON Parse
   const paid = JSON.parse(post);

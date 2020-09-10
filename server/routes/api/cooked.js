@@ -28,7 +28,7 @@ const upload2 = multer({ storage: storage2 });
 /* POST cooked finish.  */
 //음식 조리완료 //Cooked
 router.post("/finish", function (req, res, next) {
-  console.log("api cooked finish ");
+  console.log("EXPRESS :API cooked finish REQ");
   const post = req.body;
   //JSON Parse
   const cooked = JSON.parse(post);
@@ -62,7 +62,7 @@ router.post("/finish", function (req, res, next) {
 /* GET cooked List.  */
 //메뉴 주문 내역 조회
 router.get("/list", function (req, res, next) {
-  console.log("api cooked list");
+  console.log("EXPRESS :API cooked list REQ");
   Order.find({ status: 2 }) //{ $gt: 0, $lt: 3 }
     .then((result) => {
       /* console.log(result); */

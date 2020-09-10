@@ -110,13 +110,25 @@ function onListening() {
 }
 
 socketIO.on("connection", function (socket) {
-  console.log("A new browser has connected to this server");
   //socket.broadcast.emit("welcome", "first connection");
 
   socket.on("init", function (data) {
+    console.log("A new browser has connected to this server");
     console.log(data.name);
     socket.broadcast.emit("welcome", `${data.name}`);
     //socketIO.emit("welcome", `${data.name}`);
+  });
+  socket.on("order", function (data) {
+    console.log(`server order res ${data.name}`);
+    socket.broadcast.emit("order", `from server ${data.name}`);
+  });
+  socket.on("cooked", function (data) {
+    console.log(`server cooked res ${data.name}`);
+    socket.broadcast.emit("cooked", `from server ${data.name}`);
+  });
+  socket.on("paid", function (data) {
+    console.log(`server paid res ${data.name}`);
+    socket.broadcast.emit("paid", `from server ${data.name}`);
   });
 });
 /* 

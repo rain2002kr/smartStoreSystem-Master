@@ -28,7 +28,7 @@ const upload2 = multer({ storage: storage2 });
 /* POST order food.  */
 //메뉴 주문
 router.post("/food", function (req, res, next) {
-  console.log("api order food ");
+  console.log("EXPRESS :API order food REQ");
   const post = req.body;
   //JSON Parse
   const order = JSON.parse(post);
@@ -82,7 +82,7 @@ router.post("/food", function (req, res, next) {
 /* GET order List.  */
 //메뉴 주문 내역 조회
 router.get("/list", function (req, res, next) {
-  console.log("api orderlist");
+  console.log("EXPRESS :API orderlist REQ");
   Order.find({ status: 1 }) //{ $gt: 0, $lt: 3 }
     .then((result) => {
       /* console.log(result); */
